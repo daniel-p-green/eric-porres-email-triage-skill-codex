@@ -1,0 +1,9 @@
+{
+  "id": "empty-inbox-state",
+  "description": "No messages in selected window should return clean inbox response.",
+  "state": {
+    "message_count": 0,
+    "window": "1d"
+  },
+  "expected_behavior": "return_clean_inbox_message"
+}

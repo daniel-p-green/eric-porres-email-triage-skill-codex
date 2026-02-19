@@ -1,0 +1,18 @@
+{
+  "id": "work-deadline-language",
+  "description": "Work domain plus deadline language is auto Tier 1.",
+  "message": {
+    "from": "Manager <lead@acme.com>",
+    "subject": "Need this by EOD",
+    "snippet": "Please send revised numbers by EOD.",
+    "to": "you@domain.com",
+    "labels": ["INBOX"]
+  },
+  "context": {
+    "family_senders": [],
+    "work_domains": ["acme.com"],
+    "alias_tier_map": {}
+  },
+  "expected_tier": "reply_needed",
+  "expected_reason": "Deadline language and work domain"
+}

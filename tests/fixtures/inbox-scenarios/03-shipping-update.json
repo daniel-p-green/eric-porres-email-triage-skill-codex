@@ -1,0 +1,20 @@
+{
+  "id": "shipping-update",
+  "description": "Shipping updates default to Tier 2.",
+  "message": {
+    "from": "Shop <orders@store.com>",
+    "subject": "Your package is out for delivery",
+    "snippet": "Track your shipment here.",
+    "to": "you@domain.com",
+    "labels": ["INBOX"]
+  },
+  "context": {
+    "family_senders": [],
+    "work_domains": ["acme.com"],
+    "alias_tier_map": {
+      "shopping@domain.com": "noise"
+    }
+  },
+  "expected_tier": "review",
+  "expected_reason": "Delivery update"
+}

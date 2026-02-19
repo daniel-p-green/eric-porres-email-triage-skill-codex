@@ -1,0 +1,9 @@
+{
+  "id": "high-volume-state",
+  "description": "High volume should trigger batching/filter recommendation.",
+  "state": {
+    "message_count": 73,
+    "window": "1d"
+  },
+  "expected_behavior": "warn_and_offer_batching"
+}

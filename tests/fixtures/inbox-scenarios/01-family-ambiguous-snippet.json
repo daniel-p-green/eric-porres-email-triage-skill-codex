@@ -1,0 +1,18 @@
+{
+  "id": "family-ambiguous-snippet",
+  "description": "Known family sender with ambiguous snippet must still be Tier 1.",
+  "message": {
+    "from": "Alex Green <alex@example.com>",
+    "subject": "Quick question",
+    "snippet": "Can you call me when you can?",
+    "to": "you@domain.com",
+    "labels": ["INBOX"]
+  },
+  "context": {
+    "family_senders": ["alex@example.com"],
+    "work_domains": ["acme.com"],
+    "alias_tier_map": {}
+  },
+  "expected_tier": "reply_needed",
+  "expected_reason": "Known family sender"
+}

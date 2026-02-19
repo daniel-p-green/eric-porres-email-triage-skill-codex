@@ -1,0 +1,24 @@
+{
+  "name": "eric-porres-email-triage-skill-codex-teaser",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "remotion studio",
+    "render:high": "remotion render CodexTeaser ../../assets/video/codex-teaser.mp4",
+    "render:low": "remotion render CodexTeaser ../../assets/video/codex-teaser-low.mp4 --scale=0.5",
+    "render:poster": "remotion still CodexTeaser ../../assets/video/codex-teaser-poster.png --frame=72"
+  },
+  "dependencies": {
+    "@geist-ui/icons": "^1.0.2",
+    "@remotion/cli": "^4.0.375",
+    "@remotion/tailwind": "^4.0.375",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.375"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  }
+}

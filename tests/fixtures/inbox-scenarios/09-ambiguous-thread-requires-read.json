@@ -1,0 +1,15 @@
+{
+  "id": "ambiguous-thread-requires-read",
+  "description": "Ambiguous snippet should force full message/thread read before drafting.",
+  "message": {
+    "from": "Partner <partner@vendor.com>",
+    "subject": "Following up",
+    "snippet": "Can we proceed as discussed?",
+    "to": "you@domain.com",
+    "labels": ["INBOX"]
+  },
+  "state": {
+    "snippet_confidence": "low"
+  },
+  "expected_behavior": "read_full_message_and_thread_before_draft"
+}

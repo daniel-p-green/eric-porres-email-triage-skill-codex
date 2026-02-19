@@ -1,0 +1,18 @@
+{
+  "id": "marketing-bulk",
+  "description": "Bulk marketing should be Tier 3 noise.",
+  "message": {
+    "from": "Deals <promo@couponhub.com>",
+    "subject": "50% off this weekend",
+    "snippet": "Unsubscribe any time. Limited offer!",
+    "to": "you@domain.com",
+    "labels": ["INBOX"]
+  },
+  "context": {
+    "family_senders": [],
+    "work_domains": ["acme.com"],
+    "alias_tier_map": {}
+  },
+  "expected_tier": "noise",
+  "expected_reason": "Promotional bulk"
+}

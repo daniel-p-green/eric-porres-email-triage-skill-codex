@@ -1,0 +1,13 @@
+interface:
+  display_name: "Eric Porres Email Triage (Codex)"
+  short_description: "Gmail triage: Reply, Review, Noise"
+  default_prompt: "Use $email-triage to triage my inbox for the last 24 hours and show Reply Needed, Review, and Noise."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "gmail"
+      description: "Any configured Gmail MCP server that supports inbox search/read/thread/draft/archive workflows."
+
+policy:
+  allow_implicit_invocation: true

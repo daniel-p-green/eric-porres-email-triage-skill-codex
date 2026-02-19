@@ -1,0 +1,8 @@
+{
+  "id": "missing-tools-state",
+  "description": "Missing Gmail MCP tools must halt triage and provide setup guidance.",
+  "state": {
+    "gmail_tools_available": false
+  },
+  "expected_behavior": "halt_and_show_setup_steps"
+}

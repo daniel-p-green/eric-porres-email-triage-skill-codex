@@ -1,0 +1,20 @@
+{
+  "id": "unknown-alias-content-fallback",
+  "description": "Unknown alias should fall back to content-based classification.",
+  "message": {
+    "from": "Airline <alerts@airline.com>",
+    "subject": "Flight schedule update",
+    "snippet": "Departure time changed by 45 minutes.",
+    "to": "mystery-alias@domain.com",
+    "labels": ["INBOX"]
+  },
+  "context": {
+    "family_senders": [],
+    "work_domains": ["acme.com"],
+    "alias_tier_map": {
+      "travel@domain.com": "review"
+    }
+  },
+  "expected_tier": "review",
+  "expected_reason": "Travel update fallback"
+}
