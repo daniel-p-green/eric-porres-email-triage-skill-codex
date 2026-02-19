@@ -1,30 +1,39 @@
-# eric-porres-email-triage-skill-codex
+# Eric Porres Email Triage Skill For Codex
 
 Based on the original workflow by Eric Porres.
 
-This repository ports Eric Porres' inbox triage workflow to Codex as a global skill package while preserving the original model: snippet-first triage, three-tier prioritization, reply drafting, and explicit confirmation gates before any send or archive action.
+This repository ports Eric Porres' inbox triage method to Codex as a global skill package while preserving the original operating model: snippet-first triage, three-tier prioritization, reply drafting, and explicit confirmation gates before any send or archive action.
 
-## Attribution
+## Teaser
 
-This project is an independent Codex adaptation of:
-- Original project: https://github.com/ericporres/email-triage-plugin
-- Original author: Eric Porres
+<video src="assets/video/codex-teaser-low.mp4" poster="assets/video/codex-teaser-poster.png" controls preload="metadata" width="960">
+  Your browser does not support embedded video.
+</video>
 
-Attribution is intentionally prominent in this repository name, README, NOTICE, and licensing context.
+- Low-res teaser: `assets/video/codex-teaser-low.mp4`
+- High-res teaser: `assets/video/codex-teaser.mp4`
+- Poster frame: `assets/video/codex-teaser-poster.png`
 
-## What This Skill Does
+## Why This Exists
 
-- Scans Gmail inbox with a time window (default: last 24 hours)
-- Classifies messages into:
-  - Reply Needed
-  - Review
-  - Noise
-- Drafts replies for Tier 1 items with voice guidance
-- Requires explicit confirmation before send/archive
+Most inbox tooling optimizes for filtering mechanics. This workflow optimizes for decision quality.
 
-## Install (Global Codex Skill)
+- Scan recent inbox traffic using a reliable time window
+- Classify for action priority, not label aesthetics
+- Draft high-context replies only for items that require action
+- Keep user control with explicit confirmation checkpoints
 
-### Option A: Install from local clone
+## Feature Highlights
+
+- Snippet-first inbox triage for speed and token efficiency
+- Three-tier output: Reply Needed, Review, Noise
+- Alias-aware routing with content fallback
+- Thread-aware drafting for Tier 1 responses
+- Strict safety defaults with no implicit execution
+
+## Install
+
+Install as a global Codex skill:
 
 ```bash
 mkdir -p ~/.codex/skills
@@ -33,25 +42,21 @@ cp -R skills/email-triage ~/.codex/skills/email-triage
 
 Restart Codex after installation.
 
-### Option B: Install from published repo
+## Gmail MCP Setup
 
-Use your normal skill installation workflow once this repo is published.
+This skill requires a configured Gmail MCP server.
 
-## Gmail MCP Setup (Provider-Agnostic)
-
-This skill expects a Gmail MCP server to be configured in Codex.
-
-Template setup command pattern:
+Template setup pattern:
 
 ```bash
 codex mcp add gmail --url https://<your-gmail-mcp-server>/mcp
 codex mcp login gmail
 ```
 
-Then restart Codex. For detailed setup and troubleshooting, see:
+Full setup and troubleshooting:
 - `skills/email-triage/references/setup-gmail-mcp.md`
 
-## Usage Prompts (Codex)
+## Usage Prompts
 
 - "check email"
 - "triage my inbox"
@@ -62,54 +67,62 @@ Then restart Codex. For detailed setup and troubleshooting, see:
 
 ## Output Contract
 
-The skill must produce:
+The skill returns:
 
 - `# Inbox Triage - <date>`
 - `## Reply Needed (N)` with numbered entries
 - `## Review (N)`
 - `## Noise (N)` with category counts
 
-Contract details:
+Contract reference:
 - `skills/email-triage/references/output-contract.md`
 
-## Safety Guarantees
+## Safety Model
 
 - Never send email without explicit confirmation
 - Never archive without explicit confirmation
 - Never permanently delete
+- Never auto-execute destructive inbox actions
 
-## Test Strategy
+## Quality Gates
 
-Layered validation is included:
-
-1. Fixture classification checks
-- `tests/classification/run_fixture_checks.py`
-- `tests/classification/test_tiering_matrix.md`
-
-2. Output contract checks
-- `tests/contracts/check_output_contract.py`
-- `tests/contracts/test_output_format.md`
-
-3. Live Gmail smoke checklist
-- `tests/smoke/live-gmail-checklist.md`
-
-Run all checks:
+Run the validation suite:
 
 ```bash
 bash scripts/run_all_checks.sh
 ```
 
-## Claude Plugin vs Codex Skill
+Checks include:
 
-| Area | Claude plugin | Codex skill port |
+1. Fixture-based classification parity
+2. Output contract validation
+3. Required file and trigger checks
+4. Markdown link integrity checks
+5. `agents/openai.yaml` structure checks
+
+Manual live verification checklist:
+- `tests/smoke/live-gmail-checklist.md`
+
+## Compatibility Summary
+
+| Area | Claude Plugin | Codex Skill Port |
 |---|---|---|
-| Packaging | `.claude-plugin` + commands + skill | Codex global skill (`~/.codex/skills/email-triage`) |
-| Entry | `/email`, `/summary`, natural language | natural language trigger phrases |
-| Core logic | `skills/email-triage/SKILL.md` | `skills/email-triage/SKILL.md` |
+| Packaging | `.claude-plugin` + commands + skill | Global Codex skill (`~/.codex/skills/email-triage`) |
+| Entry | `/email`, `/summary`, natural language | Natural language trigger phrases |
+| Core triage logic | `skills/email-triage/SKILL.md` | `skills/email-triage/SKILL.md` |
 | Gmail dependency | Gmail MCP tools | Gmail MCP tools |
-| Safety model | explicit confirmation | explicit confirmation |
+| Safety posture | Explicit confirmation | Explicit confirmation |
 
-Behavior is intentionally near 1:1 with Eric's workflow.
+Behavior target is near 1:1 parity with Eric's original workflow.
+
+## Attribution
+
+This is an independent Codex adaptation of:
+
+- Original project: [ericporres/email-triage-plugin](https://github.com/ericporres/email-triage-plugin)
+- Original author: [Eric Porres](https://github.com/ericporres)
+
+Attribution is intentionally prominent in this repository name, README, NOTICE, and licensing context.
 
 ## Repository Layout
 
@@ -118,21 +131,11 @@ eric-porres-email-triage-skill-codex/
 ├── README.md
 ├── LICENSE
 ├── NOTICE.md
-├── skills/
-│   └── email-triage/
-│       ├── SKILL.md
-│       ├── agents/openai.yaml
-│       └── references/
-│           ├── setup-gmail-mcp.md
-│           ├── classification-rules.md
-│           ├── reply-voice-and-guards.md
-│           └── output-contract.md
+├── assets/video/
+├── skills/email-triage/
 ├── tests/
-│   ├── fixtures/inbox-scenarios/*.json
-│   ├── classification/
-│   ├── contracts/
-│   └── smoke/
-└── scripts/run_all_checks.sh
+├── scripts/
+└── video/teaser/
 ```
 
 ## License

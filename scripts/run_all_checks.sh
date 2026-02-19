@@ -42,7 +42,11 @@ from pathlib import Path
 
 root = Path(".").resolve()
 missing = []
+ignored_dirs = {".git", "node_modules", ".venv", "venv", "dist", "build"}
 for md in root.rglob("*.md"):
+    rel = md.relative_to(root)
+    if any(part in ignored_dirs for part in rel.parts):
+        continue
     text = md.read_text(encoding="utf-8")
     for match in re.finditer(r"\[[^\]]+\]\(([^)]+)\)", text):
         link = match.group(1).strip()
@@ -50,7 +54,7 @@ for md in root.rglob("*.md"):
             continue
         target = (md.parent / link).resolve()
         if not target.exists():
-            missing.append((md.relative_to(root), link))
+            missing.append((rel, link))
 
 if missing:
     print("Broken local markdown links:")
