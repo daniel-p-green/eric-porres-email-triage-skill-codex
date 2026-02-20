@@ -6,13 +6,11 @@ This repository ports Eric Porres' inbox triage method to Codex as a global skil
 
 ## Teaser
 
-<video src="assets/video/codex-teaser-low.mp4" poster="assets/video/codex-teaser-poster.png" controls preload="metadata" width="960">
-  Your browser does not support embedded video.
-</video>
+[![Codex teaser poster](assets/video/codex-teaser-poster.png)](assets/video/codex-teaser-low.mp4)
 
-- Low-res teaser: `assets/video/codex-teaser-low.mp4`
-- High-res teaser: `assets/video/codex-teaser.mp4`
-- Poster frame: `assets/video/codex-teaser-poster.png`
+- Low-res teaser (mp4): `assets/video/codex-teaser-low.mp4`
+- High-res teaser (mp4): `assets/video/codex-teaser.mp4`
+- Poster frame (png): `assets/video/codex-teaser-poster.png`
 
 ## Why This Exists
 
@@ -69,7 +67,7 @@ Full setup and troubleshooting:
 
 The skill returns:
 
-- `# Inbox Triage - <date>`
+- `# Inbox Triage - <YYYY-MM-DD>`
 - `## Reply Needed (N)` with numbered entries
 - `## Review (N)`
 - `## Noise (N)` with category counts

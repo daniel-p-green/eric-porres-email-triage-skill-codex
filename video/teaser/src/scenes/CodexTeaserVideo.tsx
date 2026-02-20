@@ -1,4 +1,5 @@
 import {AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig} from 'remotion';
+import {Fragment} from 'react';
 import {ArrowRight, BarChart, Check, Code, Folder, Globe, Lock, Search, Settings} from '@geist-ui/icons';
 import {fadeIn, fadeOut, scaleIn, slideRight, slideUp} from '../utils/animations';
 
@@ -34,7 +35,7 @@ const IntroScene: React.FC = () => {
           style={{opacity: badgeOpacity}}
         >
           <Code size={18} color="#ededed" />
-          <span className="font-mono text-[13px] tracking-wide text-gray-200">CODEx BUILD</span>
+          <span className="font-mono text-[13px] tracking-wide text-gray-200">CODEX BUILD</span>
         </div>
       </div>
 
@@ -196,20 +197,19 @@ const WorkflowScene: React.FC = () => {
         {['Check Email', 'Classify', 'Draft Reply', 'Confirm Action'].map((label, index) => {
           const op = fadeIn(frame, fps, 0.2 + index * 0.22, 0.3) * fadeOut(frame, fps, 6.0, 0.4);
           return (
-            <>
+            <Fragment key={label}>
               <div
                 className="rounded-xl border border-gray-500/60 bg-background-200/75 px-5 py-3 text-center text-[17px]"
                 style={{opacity: op}}
-                key={`node-${label}`}
               >
                 {label}
               </div>
               {index < 3 ? (
-                <div style={{opacity: op}} key={`arrow-${label}`}>
+                <div style={{opacity: op}}>
                   <ArrowRight size={18} color="#737373" />
                 </div>
               ) : null}
-            </>
+            </Fragment>
           );
         })}
       </div>
