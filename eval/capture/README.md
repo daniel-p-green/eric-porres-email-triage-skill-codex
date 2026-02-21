@@ -1,13 +1,13 @@
-# Capture Inputs for Release Fixture
+# Capture Inputs
 
-This folder stores raw capture and human labels used to build the strict release fixture.
+This directory stores raw message captures and human labels used to build release fixtures.
 
 ## Files
 
-- `raw-messages.jsonl`: exported candidate messages (id + context metadata)
-- `labels.jsonl`: reviewer labels aligned to `raw-messages` by `id`
-
-Use the templates in this folder to start.
+- `raw-messages.jsonl`: captured candidate rows (ID + message metadata)
+- `labels.jsonl`: reviewer labels keyed by `id`
+- `raw-messages.template.jsonl`: schema template for capture rows
+- `labels.template.jsonl`: schema template for label rows
 
 ## Build Fixture
 
@@ -17,3 +17,9 @@ python3 scripts/build_release_fixture.py \
   --labels eval/capture/labels.jsonl \
   --output eval/fixtures/release-fixture.jsonl
 ```
+
+## Data Handling
+
+- Keep capture files local and sanitized.
+- Use stable IDs to preserve deterministic mapping.
+- Follow `eval/LABELING_RUBRIC.md` for consistent tier and safety labeling.

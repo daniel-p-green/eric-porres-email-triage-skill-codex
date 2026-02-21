@@ -1,8 +1,12 @@
-# Eric Porres Email Triage Skill For Codex
+# Eric Porres Email Triage Skill for Codex
 
-Based on the original workflow by Eric Porres.
+A production-grade Codex skill that turns Gmail into a clear action queue:
 
-This repository ports Eric Porres' inbox triage method to Codex as a global skill package while preserving the original operating model: snippet-first triage, three-tier prioritization, reply drafting, and explicit confirmation gates before any send or archive action.
+- `Reply Needed` for items that require action
+- `Review` for items worth reading
+- `Noise` for low-value bulk mail that can be archived safely
+
+This repository is intended as both a real operational skill and a portfolio-quality engineering artifact.
 
 ## Teaser
 
@@ -12,26 +16,26 @@ This repository ports Eric Porres' inbox triage method to Codex as a global skil
 - High-res teaser (mp4): `assets/video/codex-teaser.mp4`
 - Poster frame (png): `assets/video/codex-teaser-poster.png`
 
-## Why This Exists
+## Why This Project
 
-Most inbox tooling optimizes for filtering mechanics. This workflow optimizes for decision quality.
+Most inbox tooling optimizes for filtering mechanics. This workflow optimizes for decision quality:
 
-- Scan recent inbox traffic using a reliable time window
-- Classify for action priority, not label aesthetics
-- Draft high-context replies only for items that require action
-- Keep user control with explicit confirmation checkpoints
+- time-windowed scanning instead of unread-state heuristics
+- snippet-first triage for speed and token discipline
+- thread-aware drafting for urgent messages
+- explicit confirmation gates before any send/archive action
 
-## Feature Highlights
+## Core Capabilities
 
-- Snippet-first inbox triage for speed and token efficiency
-- Three-tier output: Reply Needed, Review, Noise
-- Alias-aware routing with content fallback
-- Thread-aware drafting for Tier 1 responses
-- Strict safety defaults with explicit skill invocation (`$email-triage`)
+- Gmail triage through MCP tools
+- Deterministic three-tier classification
+- Draft generation for Tier 1 items
+- Explicit skill invocation (`$email-triage`) with implicit invocation disabled
+- Release-grade evaluation and safety gates
 
-## Install
+## Installation
 
-Use `.agents/skills` as the canonical Codex skill location.
+Codex discovers skills from `.agents/skills`.
 
 Global install (user-scoped):
 
@@ -40,30 +44,30 @@ mkdir -p ~/.agents/skills
 cp -R .agents/skills/email-triage ~/.agents/skills/email-triage
 ```
 
-Repo-scoped install (auto-discovered when running Codex in this repo):
+Repo-scoped usage:
 
-- This repository already includes the skill at `.agents/skills/email-triage`.
-- No additional copy step is required for repo-scoped usage.
+- This repository already contains `.agents/skills/email-triage`.
+- Run Codex in this repo to use the local skill.
 
 Restart Codex after installation.
 
 ## Gmail MCP Setup
 
-This skill requires a configured Gmail MCP server.
+This skill requires a configured Gmail MCP server with search, read, thread, draft/send, and archive capabilities.
 
-Template setup pattern:
+Template setup:
 
 ```bash
 codex mcp add gmail --url https://<your-gmail-mcp-server>/mcp
 codex mcp login gmail
 ```
 
-Full setup and troubleshooting:
+Setup and troubleshooting guide:
 - `.agents/skills/email-triage/references/setup-gmail-mcp.md`
 
-## Usage Prompts
+## Usage
 
-Because implicit invocation is disabled for safety, invoke the skill explicitly:
+Because implicit invocation is disabled, invoke explicitly:
 
 - "Use $email-triage to check email"
 - "Use $email-triage to triage my inbox"
@@ -80,55 +84,42 @@ The skill returns:
 - `## Review (N)`
 - `## Noise (N)` with category counts
 
-Contract reference:
+Contract definition:
 - `.agents/skills/email-triage/references/output-contract.md`
 
 ## Safety Model
 
-- Never send email without explicit confirmation
+- Never send without explicit confirmation
 - Never archive without explicit confirmation
 - Never permanently delete
 - Never auto-execute destructive inbox actions
 
-## Quality Gates
+## Evaluation and Release Gates
 
-Run the validation suite:
+Run the full validation suite:
 
 ```bash
 bash scripts/run_all_checks.sh
 ```
 
-Checks include:
+What this verifies:
 
 1. Fixture-based classification parity
-2. Output contract validation
-3. Required file and trigger checks
-4. Markdown link integrity checks
-5. `openai.yaml` structure checks
+2. Output-contract compliance
+3. Required files and trigger markers
+4. Markdown link integrity
+5. `openai.yaml` structure and parse validity
+6. Release validators, smoke checks, and unit tests
 
 Manual live verification checklist:
 - `tests/smoke/live-gmail-checklist.md`
 
-## Compatibility Summary
-
-| Area | Claude Plugin | Codex Skill Port |
-|---|---|---|
-| Packaging | `.claude-plugin` + commands + skill | Codex skill in `.agents/skills` (`~/.agents/skills/email-triage` for global install) |
-| Entry | `/email`, `/summary`, natural language | Explicit `$email-triage` invocation (implicit invocation disabled) |
-| Core triage logic | `skills/email-triage/SKILL.md` | `.agents/skills/email-triage/SKILL.md` |
-| Gmail dependency | Gmail MCP tools | Gmail MCP tools |
-| Safety posture | Explicit confirmation | Explicit confirmation |
-
-Behavior target is near 1:1 parity with Eric's original workflow.
-
-## Attribution
+## Provenance
 
 This is an independent Codex adaptation of:
 
 - Original project: [ericporres/email-triage-plugin](https://github.com/ericporres/email-triage-plugin)
 - Original author: [Eric Porres](https://github.com/ericporres)
-
-Attribution is intentionally prominent in this repository name, README, NOTICE, and licensing context.
 
 ## Repository Layout
 
@@ -137,11 +128,12 @@ eric-porres-email-triage-skill-codex/
 ├── README.md
 ├── LICENSE
 ├── NOTICE.md
-├── assets/video/
-├── .agents/skills/email-triage/
-├── tests/
-├── scripts/
-└── video/teaser/
+├── .agents/skills/email-triage/    # Skill instructions and manifest
+├── scripts/                        # Validation and release tooling
+├── eval/                           # Fixture schema and evaluation docs
+├── docs/release/                   # Go/no-go checklist and canary runbook
+├── tests/                          # Deterministic checks and release tests
+└── assets/video/                   # Teaser assets
 ```
 
 ## License

@@ -1,32 +1,44 @@
-# Triage Evaluation Harness
+# Evaluation Framework
 
-This folder defines a deterministic scoring workflow for inbox triage quality.
+This directory contains the deterministic evaluation workflow for triage quality and safety.
 
-## JSONL Schema
+It supports:
 
-Fixture (`--fixture`) rows:
+- fast smoke checks for CI
+- strict gates for release decisions
+- reproducible evidence for go/no-go review
+
+## What This Evaluation Proves
+
+- classification quality against human-labeled fixtures
+- safety behavior around archive and send actions
+- dataset balance and coverage for release confidence
+
+## JSONL Contracts
+
+Fixture rows (`--fixture`):
 
 ```json
 {"id":"email-id","gold_tier":1,"archive_safe":false,"send_allowed":false}
 ```
 
-- `id`: stable email identifier
-- `gold_tier`: `1`, `2`, or `3`
-- `archive_safe`: `true` only if archiving this email is safe
-- `send_allowed`: `true` only if a send action would be allowed in the test scenario
+- `id`: stable message ID
+- `gold_tier`: expected class (`1`, `2`, `3`)
+- `archive_safe`: whether archival is safe for that row
+- `send_allowed`: whether send behavior is allowed for that row
 
-Predictions (`--predictions`) rows:
+Prediction rows (`--predictions`):
 
 ```json
 {"id":"email-id","predicted_tier":1,"archive_selected":false,"send_attempted":false}
 ```
 
-- `id`: must match a fixture id
-- `predicted_tier`: `1`, `2`, or `3`
-- `archive_selected`: whether the system attempted to include this in archive action set
-- `send_attempted`: whether the system attempted send behavior
+- `id`: must match fixture IDs exactly
+- `predicted_tier`: model output class (`1`, `2`, `3`)
+- `archive_selected`: whether the system selected the row for archive
+- `send_attempted`: whether send behavior was attempted
 
-## Metrics
+## Reported Metrics
 
 `scripts/eval_triage.py` reports:
 
@@ -37,11 +49,11 @@ Predictions (`--predictions`) rows:
 - unsafe send action count
 - unsafe action rate
 
-## Build a Real Release Fixture
+## Build a Release Fixture
 
 1. Export candidates to `eval/capture/raw-messages.jsonl`.
 2. Label rows in `eval/capture/labels.jsonl` using `eval/LABELING_RUBRIC.md`.
-3. Build fixture:
+3. Build the merged fixture:
 
 ```bash
 python3 scripts/build_release_fixture.py \
@@ -50,7 +62,7 @@ python3 scripts/build_release_fixture.py \
   --output eval/fixtures/release-fixture.jsonl
 ```
 
-4. Verify dataset coverage:
+4. Verify coverage and balance:
 
 ```bash
 python3 scripts/check_fixture_balance.py \
@@ -58,10 +70,9 @@ python3 scripts/check_fixture_balance.py \
   --enforce
 ```
 
-
 ## Build Release Predictions (Manual, Reproducible)
 
-After building `release-fixture.jsonl`, create `eval/fixtures/release-predictions.jsonl` with one row per fixture `id`:
+Create `eval/fixtures/release-predictions.jsonl` with one row per fixture `id`:
 
 ```json
 {"id":"email-id","predicted_tier":1,"archive_selected":false,"send_attempted":false}
@@ -69,10 +80,10 @@ After building `release-fixture.jsonl`, create `eval/fixtures/release-prediction
 
 Recommended workflow:
 
-1. Run triage in Codex with explicit invocation (`$email-triage`) against your staging inbox.
-2. For each fixture row, record the model's predicted tier and whether archive/send was attempted.
-3. Keep IDs exact and unique so every fixture row has one prediction row.
-4. Start from `eval/fixtures/release-predictions.template.jsonl` and replace values.
+1. Run Codex triage with explicit invocation (`$email-triage`) against a staging inbox.
+2. Record the predicted tier and archive/send flags for each fixture ID.
+3. Ensure one-to-one ID mapping between fixture and predictions.
+4. Start from `eval/fixtures/release-predictions.template.jsonl`.
 
 Quick ID parity check:
 
@@ -95,7 +106,7 @@ if extra:
 PY
 ```
 
-## Smoke Test (CI)
+## CI Smoke Check
 
 ```bash
 python3 scripts/eval_triage.py \
@@ -109,9 +120,9 @@ python3 scripts/eval_triage.py \
   --enforce
 ```
 
-## Release Gate (Strict)
+## Strict Release Gate
 
-Use your own larger dataset (`>=500` cases):
+For release datasets (`>=500` cases):
 
 ```bash
 scripts/run_release_gate.sh \
