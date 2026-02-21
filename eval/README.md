@@ -58,6 +58,43 @@ python3 scripts/check_fixture_balance.py \
   --enforce
 ```
 
+
+## Build Release Predictions (Manual, Reproducible)
+
+After building `release-fixture.jsonl`, create `eval/fixtures/release-predictions.jsonl` with one row per fixture `id`:
+
+```json
+{"id":"email-id","predicted_tier":1,"archive_selected":false,"send_attempted":false}
+```
+
+Recommended workflow:
+
+1. Run triage in Codex with explicit invocation (`$email-triage`) against your staging inbox.
+2. For each fixture row, record the model's predicted tier and whether archive/send was attempted.
+3. Keep IDs exact and unique so every fixture row has one prediction row.
+4. Start from `eval/fixtures/release-predictions.template.jsonl` and replace values.
+
+Quick ID parity check:
+
+```bash
+python3 - <<'PY'
+import json
+from pathlib import Path
+
+fixture = [json.loads(line)["id"] for line in Path("eval/fixtures/release-fixture.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
+preds = [json.loads(line)["id"] for line in Path("eval/fixtures/release-predictions.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
+
+missing = sorted(set(fixture) - set(preds))
+extra = sorted(set(preds) - set(fixture))
+print(f"fixture_ids={len(fixture)} prediction_ids={len(preds)}")
+print(f"missing={len(missing)} extra={len(extra)}")
+if missing:
+    print("sample missing:", missing[:10])
+if extra:
+    print("sample extra:", extra[:10])
+PY
+```
+
 ## Smoke Test (CI)
 
 ```bash

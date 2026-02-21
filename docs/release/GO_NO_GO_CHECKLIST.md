@@ -16,8 +16,8 @@ python3 scripts/check_human_signoff.py --signoff docs/release/evidence/human-sig
 
 ## Structural Gate (Must Pass)
 
-- `skills/email-triage/SKILL.md` has valid frontmatter with non-empty `name` and `description`
-- `skills/email-triage/agents/openai.yaml` has required interface and dependency markers
+- `.agents/skills/email-triage/SKILL.md` has valid frontmatter with non-empty `name` and `description`
+- `.agents/skills/email-triage/agents/openai.yaml` has required interface and dependency markers
 - no blocked placeholders (`yourdomain`, `yourcompany`, `[Your Name]`, `TODO`, `FIXME`, `TBD`)
 
 If any structural check fails: `NO-GO`

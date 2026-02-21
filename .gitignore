@@ -7,3 +7,10 @@ __pycache__/
 *.pyc
 node_modules/
 video/teaser/node_modules/
+eval/capture/raw-messages.jsonl
+eval/capture/labels.jsonl
+eval/fixtures/release-fixture.jsonl
+eval/fixtures/release-predictions.jsonl
+docs/release/evidence/canary-log.csv
+docs/release/evidence/human-signoff.json
+docs/release/reports/

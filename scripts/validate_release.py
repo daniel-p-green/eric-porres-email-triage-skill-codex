@@ -19,9 +19,9 @@ PLACEHOLDER_PATTERNS = [
 
 TARGET_GLOBS = [
     "README.md",
-    "skills/email-triage/SKILL.md",
-    "skills/email-triage/references/*.md",
-    "skills/email-triage/agents/openai.yaml",
+    ".agents/skills/email-triage/SKILL.md",
+    ".agents/skills/email-triage/references/*.md",
+    ".agents/skills/email-triage/agents/openai.yaml",
     "tests/**/*.md",
 ]
 
@@ -57,7 +57,7 @@ def check_required_paths(root: Path, failures: list[str]) -> None:
 
 
 def check_skill_frontmatter(root: Path, failures: list[str]) -> None:
-    skill_file = root / "skills" / "email-triage" / "SKILL.md"
+    skill_file = root / ".agents" / "skills" / "email-triage" / "SKILL.md"
     if not skill_file.exists():
         failures.append(f"Missing skill file: {skill_file}")
         return
@@ -76,7 +76,7 @@ def check_skill_frontmatter(root: Path, failures: list[str]) -> None:
 
 
 def check_openai_agent_manifest(root: Path, failures: list[str]) -> None:
-    agent_path = root / "skills" / "email-triage" / "agents" / "openai.yaml"
+    agent_path = root / ".agents" / "skills" / "email-triage" / "agents" / "openai.yaml"
     if not agent_path.exists():
         failures.append(f"Missing agent manifest: {agent_path}")
         return

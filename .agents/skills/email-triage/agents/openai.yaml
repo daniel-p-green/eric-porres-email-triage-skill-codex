@@ -10,4 +10,4 @@ dependencies:
       description: "Any configured Gmail MCP server that supports inbox search/read/thread/draft/archive workflows."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

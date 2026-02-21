@@ -20,4 +20,4 @@ Expected:
 ## Test artifacts
 
 - Sample output under test: `tests/contracts/sample_output.md`
-- Contract definition: `skills/email-triage/references/output-contract.md`
+- Contract definition: `.agents/skills/email-triage/references/output-contract.md`

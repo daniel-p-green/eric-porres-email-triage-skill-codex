@@ -27,16 +27,23 @@ Most inbox tooling optimizes for filtering mechanics. This workflow optimizes fo
 - Three-tier output: Reply Needed, Review, Noise
 - Alias-aware routing with content fallback
 - Thread-aware drafting for Tier 1 responses
-- Strict safety defaults with no implicit execution
+- Strict safety defaults with explicit skill invocation (`$email-triage`)
 
 ## Install
 
-Install as a global Codex skill:
+Use `.agents/skills` as the canonical Codex skill location.
+
+Global install (user-scoped):
 
 ```bash
-mkdir -p ~/.codex/skills
-cp -R skills/email-triage ~/.codex/skills/email-triage
+mkdir -p ~/.agents/skills
+cp -R .agents/skills/email-triage ~/.agents/skills/email-triage
 ```
+
+Repo-scoped install (auto-discovered when running Codex in this repo):
+
+- This repository already includes the skill at `.agents/skills/email-triage`.
+- No additional copy step is required for repo-scoped usage.
 
 Restart Codex after installation.
 
@@ -52,16 +59,17 @@ codex mcp login gmail
 ```
 
 Full setup and troubleshooting:
-- `skills/email-triage/references/setup-gmail-mcp.md`
+- `.agents/skills/email-triage/references/setup-gmail-mcp.md`
 
 ## Usage Prompts
 
-- "check email"
-- "triage my inbox"
-- "morning email"
-- "inbox summary"
-- "draft a reply to #2"
-- "archive noise"
+Because implicit invocation is disabled for safety, invoke the skill explicitly:
+
+- "Use $email-triage to check email"
+- "Use $email-triage to triage my inbox"
+- "Use $email-triage for morning email"
+- "Use $email-triage and draft a reply to #2"
+- "Use $email-triage and archive noise"
 
 ## Output Contract
 
@@ -73,7 +81,7 @@ The skill returns:
 - `## Noise (N)` with category counts
 
 Contract reference:
-- `skills/email-triage/references/output-contract.md`
+- `.agents/skills/email-triage/references/output-contract.md`
 
 ## Safety Model
 
@@ -96,7 +104,7 @@ Checks include:
 2. Output contract validation
 3. Required file and trigger checks
 4. Markdown link integrity checks
-5. `agents/openai.yaml` structure checks
+5. `openai.yaml` structure checks
 
 Manual live verification checklist:
 - `tests/smoke/live-gmail-checklist.md`
@@ -105,9 +113,9 @@ Manual live verification checklist:
 
 | Area | Claude Plugin | Codex Skill Port |
 |---|---|---|
-| Packaging | `.claude-plugin` + commands + skill | Global Codex skill (`~/.codex/skills/email-triage`) |
-| Entry | `/email`, `/summary`, natural language | Natural language trigger phrases |
-| Core triage logic | `skills/email-triage/SKILL.md` | `skills/email-triage/SKILL.md` |
+| Packaging | `.claude-plugin` + commands + skill | Codex skill in `.agents/skills` (`~/.agents/skills/email-triage` for global install) |
+| Entry | `/email`, `/summary`, natural language | Explicit `$email-triage` invocation (implicit invocation disabled) |
+| Core triage logic | `skills/email-triage/SKILL.md` | `.agents/skills/email-triage/SKILL.md` |
 | Gmail dependency | Gmail MCP tools | Gmail MCP tools |
 | Safety posture | Explicit confirmation | Explicit confirmation |
 
@@ -130,7 +138,7 @@ eric-porres-email-triage-skill-codex/
 ├── LICENSE
 ├── NOTICE.md
 ├── assets/video/
-├── skills/email-triage/
+├── .agents/skills/email-triage/
 ├── tests/
 ├── scripts/
 └── video/teaser/

@@ -12,12 +12,12 @@ python3 tests/contracts/check_output_contract.py
 
 echo "[3/8] Running required-file and trigger checks"
 required_files=(
-  "skills/email-triage/SKILL.md"
-  "skills/email-triage/agents/openai.yaml"
-  "skills/email-triage/references/setup-gmail-mcp.md"
-  "skills/email-triage/references/classification-rules.md"
-  "skills/email-triage/references/reply-voice-and-guards.md"
-  "skills/email-triage/references/output-contract.md"
+  ".agents/skills/email-triage/SKILL.md"
+  ".agents/skills/email-triage/agents/openai.yaml"
+  ".agents/skills/email-triage/references/setup-gmail-mcp.md"
+  ".agents/skills/email-triage/references/classification-rules.md"
+  ".agents/skills/email-triage/references/reply-voice-and-guards.md"
+  ".agents/skills/email-triage/references/output-contract.md"
   "tests/classification/test_tiering_matrix.md"
   "tests/contracts/test_output_format.md"
   "tests/smoke/live-gmail-checklist.md"
@@ -38,11 +38,11 @@ for f in "${required_files[@]}"; do
   [[ -f "$f" ]] || { echo "Missing required file: $f"; exit 1; }
 done
 
-grep -q '^name: email-triage$' skills/email-triage/SKILL.md || {
+grep -q '^name: email-triage$' .agents/skills/email-triage/SKILL.md || {
   echo "SKILL.md frontmatter missing required name"
   exit 1
 }
-grep -q '"check email"' skills/email-triage/SKILL.md || {
+grep -q '"check email"' .agents/skills/email-triage/SKILL.md || {
   echo "SKILL.md missing explicit trigger phrase"
   exit 1
 }
@@ -81,7 +81,7 @@ echo "[5/8] Validating agents/openai.yaml structure"
 python3 - <<'PY'
 from pathlib import Path
 
-path = Path("skills/email-triage/agents/openai.yaml")
+path = Path(".agents/skills/email-triage/agents/openai.yaml")
 text = path.read_text(encoding="utf-8")
 
 if not all(marker in text for marker in ("interface:", "dependencies:", "display_name:", "short_description:", "default_prompt:")):
